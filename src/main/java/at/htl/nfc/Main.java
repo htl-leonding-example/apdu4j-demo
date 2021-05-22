@@ -42,10 +42,32 @@ public class Main {
             // Protocol -> https://de.wikipedia.org/wiki/Application_Protocol_Data_Unit
             // SCTool.java getBIBO(...)
             // Protokolle können sein: T=0, T=1, *
-            Card card = myCardReader.connect("T=1");
-            System.out.println("Vor: new BlockingBIBO");
-            BlockingBIBO bibo = new BlockingBIBO(CardBIBO.wrap(card));
 
+            Card card = myCardReader.connect("T=0");
+            System.out.println("*");
+            BlockingBIBO bibo = new BlockingBIBO(CardBIBO.wrap(card));
+            CommandAPDU cmd = new CommandAPDU("FFCA000000");
+            byte[] id = bibo.transceive(cmd.getBytes());
+            System.out.println("BYTE ARRAY: " + id);
+            card.disconnect(true);
+
+
+
+//            card = myCardReader.connect("T=1");
+//            System.out.println("T=1");
+//            bibo = new BlockingBIBO(CardBIBO.wrap(card));
+//            cmd = new CommandAPDU("FFCA000000");
+//            System.out.println(bibo.transceive(cmd.getBytes()));
+//            card.disconnect(true);
+//
+//            card = myCardReader.connect("*");
+//            System.out.println("*");
+//            bibo = new BlockingBIBO(CardBIBO.wrap(card));
+//            cmd = new CommandAPDU("FFCA000000");
+//            System.out.println(bibo.transceive(cmd.getBytes()));
+//            card.disconnect(true);
+
+            /*
             System.out.println("Nach new BlockingBIBO");
             byte[][] apdus = {};
             List<byte[]> toCard = new ArrayList<>(Arrays.asList(apdus));
@@ -58,6 +80,7 @@ public class Main {
                 }
                 System.out.println(r.getData());
             }
+            */
 
         } catch (CardException e) {
             e.printStackTrace();
