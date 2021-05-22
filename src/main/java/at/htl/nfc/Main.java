@@ -1,6 +1,7 @@
 package at.htl.nfc;
 
 import apdu4j.core.BlockingBIBO;
+import apdu4j.core.CommandAPDU;
 import apdu4j.core.ResponseAPDU;
 import apdu4j.pcsc.CardBIBO;
 import apdu4j.pcsc.TerminalManager;
