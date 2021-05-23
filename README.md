@@ -66,3 +66,8 @@ public class Main {
     }
 }
 ```
+
+## Some Links
+
+- [Proximity card (BIBO)](https://www.ssatp.org/sites/ssatp/files/publications/Toolkits/Fares%20Toolkit%20content/fare-collection-technologies/smart-cards/proximity-card-(bibo).html)
+
