@@ -5,7 +5,7 @@
       <paths name="raspi">
         <serverdata>
           <mappings>
-            <mapping deploy="/apdu4j-demo" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/pi/projects/apdu4j-demo" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

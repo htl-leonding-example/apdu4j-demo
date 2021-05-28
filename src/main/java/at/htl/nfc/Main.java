@@ -12,17 +12,17 @@ import javax.smartcardio.CardException;
 import javax.smartcardio.TerminalFactory;
 import javax.smartcardio.CardTerminal;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class Main {
 
+    static CardTerminal myCardReader = null;
+
+
     public static void main(String[] args) {
         TerminalManager.fixPlatformPaths();
 
-        CardTerminal myCardReader = null;
 
         TerminalFactory f = TerminalFactory.getDefault();
 //        CardTerminal r = f.terminals().getTerminal("ACR122U");
@@ -36,20 +36,21 @@ public class Main {
             }
             myCardReader = cardTerminalList.get(0);
             System.out.println(myCardReader.getName());
-            System.out.println(myCardReader.isCardPresent() ? "Card is present" : "Card is NOT present");
+           // System.out.println(myCardReader.isCardPresent() ? "Card is present" : "Card is NOT present");
             myCardReader = LoggingCardTerminal.getInstance(myCardReader, System.out);
+
+
+            Timer timer = new Timer();
+            timer.schedule(new CardPresent(), 0, 5000);
+
 
             // Protocol -> https://de.wikipedia.org/wiki/Application_Protocol_Data_Unit
             // SCTool.java getBIBO(...)
             // Protokolle können sein: T=0, T=1, *
 
-            Card card = myCardReader.connect("T=0");
-            System.out.println("*");
-            BlockingBIBO bibo = new BlockingBIBO(CardBIBO.wrap(card));
-            CommandAPDU cmd = new CommandAPDU("FFCA000000");
-            byte[] id = bibo.transceive(cmd.getBytes());
-            System.out.println("BYTE ARRAY: " + id);
-            card.disconnect(true);
+
+
+
 
 
 
@@ -88,6 +89,27 @@ public class Main {
 
     }
 
+    static class CardPresent extends TimerTask {
+        public void run( ) {
+            try {
+                if (myCardReader.isCardPresent()) {
+                    System.out.println("is present");
+                    Card card = myCardReader.connect("T=0");
+                    System.out.println("*");
+                    BlockingBIBO bibo = new BlockingBIBO(CardBIBO.wrap(card));
+                    CommandAPDU cmd = new CommandAPDU("FFCA000000");
+                    byte[] id = bibo.transceive(cmd.getBytes());
+                    System.out.println("BYTE ARRAY: " + id);
+                    card.disconnect(true);
+                    System.out.println("");
+                }else {
 
-}
+                    System.out.println("no card");
+                    System.out.println("");
+            }
+            } catch (CardException e) {
+                e.printStackTrace();
+            }
+        }
+    }}
 
