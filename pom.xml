@@ -21,6 +21,12 @@
             <artifactId>apdu4j</artifactId>
             <version>21.04.12</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.25.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,8 +66,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
