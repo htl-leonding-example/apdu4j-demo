@@ -21,6 +21,13 @@
             <artifactId>apdu4j</artifactId>
             <version>21.04.12</version>
         </dependency>
+
+        <!-- Jersey -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>2.2.1.GA</version>
+        </dependency>
     </dependencies>
 
     <build>
