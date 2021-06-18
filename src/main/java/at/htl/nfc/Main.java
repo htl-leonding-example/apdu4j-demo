@@ -7,21 +7,42 @@ import apdu4j.core.ResponseAPDU;
 import apdu4j.pcsc.CardBIBO;
 import apdu4j.pcsc.TerminalManager;
 import apdu4j.pcsc.terminals.LoggingCardTerminal;
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 
 import javax.smartcardio.Card;
 import javax.smartcardio.CardException;
 import javax.smartcardio.TerminalFactory;
 import javax.smartcardio.CardTerminal;
-import java.io.OutputStream;
 import java.util.*;
 
 
+
 public class Main {
+    public static class Nfcinfo{
+        public String nfcId;
+    }
 
     static CardTerminal myCardReader = null;
 
+    public static void restEasyClientPost(String nfcid) throws Exception {
+        ClientRequest request = new ClientRequest("http://localhost:8080/api/person/nfc");
+        request.accept("application/json");
 
-    public static void main(String[] args) {
+        Nfcinfo nfcinfo = new Nfcinfo();
+        nfcinfo.nfcId = nfcid;
+
+        request.body("application/json", nfcinfo);
+
+        ClientResponse<String> response = request.post(String.class);
+        if (response.getStatus() != 201) {
+            throw new RuntimeException("Failed : HTTP error code : "
+                    + response.getStatus());
+        }
+
+    }
+    
+    public static void main(String[] args) throws Exception {
         TerminalManager.fixPlatformPaths();
 
 
@@ -55,6 +76,10 @@ public class Main {
                         ResponseAPDU responseAPDU = new ResponseAPDU(id);
                         if (responseAPDU.getSW() == 0x9000) {
                             System.out.printf("UID: %s%n", HexUtils.bin2hex(responseAPDU.getData()));
+                            String nfcId = HexUtils.bin2hex(responseAPDU.getData());
+
+                            //Aufruf zur POST
+                            restEasyClientPost(nfcId);
                         } else {
                             System.err.printf("UID bot supported by reader ? SW=%04Xd", responseAPDU.getSW());
                         }
