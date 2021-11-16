@@ -87,6 +87,8 @@ public class Main {
             e.printStackTrace();
         }
 
+        TagLoader tagLoader = new TagLoader();
+        tagLoader.sendData();
     }
 
     static class CardPresent extends TimerTask {

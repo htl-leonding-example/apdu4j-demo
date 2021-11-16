@@ -9,7 +9,7 @@ public class TagLoader {
     public static void sendData() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("158.101.189.223")) //+ nfcid
+                .uri(URI.create("158.101.189.223/123")) // /nfcid
                 .build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
